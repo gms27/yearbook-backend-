@@ -14,6 +14,5 @@ if (process.env.VERCEL !== '1') {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
   });
 }
-
 // exporta o app para a Vercel usar como serverless function
 export default app;
