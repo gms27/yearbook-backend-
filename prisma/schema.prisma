@@ -45,3 +45,12 @@ model Aluno {
   criadoEm      DateTime   @default(now())                 // data de criação automática
   mensagens     Mensagem[]                                 // relação 1:N — um aluno tem muitas mensagens
 }
+
+Model Mensagem {
+  id         Int      @id @default(autoincrement())
+  texto      String
+  imagemUrl  String?
+  autorId    Int
+  autor      Aluno    @relation(fields: [autorId], references: [id])
+  criadoEm   DateTime @default(now())
+}
