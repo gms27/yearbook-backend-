@@ -1,3 +1,4 @@
+npm run dev
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -5,24 +6,13 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-// Datasource — conexão com o banco PostgreSQL no Neon
-datasource db {
-  provider = "postgresql"           // tipo de banco
-  url      = env("DATABASE_URL")    // lê a URL do arquivo .env
-}
-
-// Generator — gera o Prisma Client em JavaScript
-generator client {
-  provider = "prisma-client-js"
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 // Enum — valores fixos para o campo role
@@ -46,7 +36,8 @@ model Aluno {
   mensagens     Mensagem[]                                 // relação 1:N — um aluno tem muitas mensagens
 }
 
-Model Mensagem {
+// Model Mensagem — representa a tabela "Mensagem" no banco
+model Mensagem {
   id         Int      @id @default(autoincrement())
   texto      String
   imagemUrl  String?
