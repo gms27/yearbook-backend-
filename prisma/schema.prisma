@@ -1,18 +1,10 @@
-npm run dev
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+    datasource db {
+      provider = "sqlite" // troca de postgresql pra sqlite
+      url = "file:./dev.db"
+    }
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
 }
 
 // Enum — valores fixos para o campo role
