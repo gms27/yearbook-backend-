@@ -15,4 +15,4 @@ router.post('/', criarAluno);          // POST /alunos
 router.put('/:id', atualizarAluno);    // PUT /alunos/:id
 router.delete('/:id', deletarAluno);   // DELETE /alunos/:id
 
-export default router; // exporta o router para usar no index.js
+export const alunosRouter = router; 

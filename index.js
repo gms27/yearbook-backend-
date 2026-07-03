@@ -1,10 +1,12 @@
 import express from 'express';                // importa o Express
-import alunosRouter from './routes/alunos.js'; // importa o router de alunos <- NOVO
+import { alunosRouter } from './routes/alunos.js'; // <- SÓ 1 VEZ. com {}
+import { PrismaClient } from '@prisma/client';
 
 const app = express();      // cria a aplicação Express
 const PORT = 3000;          // porta do servidor
 
-app.use(express.json());    // middleware que parseia JSON do body das requisições  <- NOVO
+app.use(express.json());    // middleware que parseia JSON
+app.use(logger);            // middleware de log
 
 // rota raiz — boas-vindas
 app.get('/', (req, res) => {
@@ -16,7 +18,7 @@ app.get('/status', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
 
-// registra as rotas de alunos com prefixo /alunos  <- NOVO
+// registra as rotas de alunos com prefixo /alunos
 app.use('/alunos', alunosRouter);
 
 // inicia o servidor localmente — na Vercel essa parte é pulada
