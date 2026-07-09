@@ -1,4 +1,4 @@
-import prisma from '../prisma/client.js'; // importa o singleton do Prisma
+import prisma from "../prisma/client.js"; // importa o singleton do Prisma
 
 // select que omite senhaHash — reutilizado em todas as queries de alunos
 const selectSemSenha = {
@@ -27,11 +27,11 @@ export async function buscarAluno(req, res) {
   const { id } = req.params; // extrai o :id da URL
   const aluno = await prisma.aluno.findUnique({
     where: { id: Number(id) }, // converte string → number
-    select: selectSemSenha,    // omite senhaHash
+    select: selectSemSenha, // omite senhaHash
   });
 
   if (!aluno) {
-    return res.status(404).json({ erro: 'Aluno não encontrado' }); // null → 404
+    return res.status(404).json({ erro: "Aluno não encontrado" }); // null → 404
   }
 
   res.json(aluno); // retorna o aluno encontrado
@@ -43,40 +43,31 @@ export async function buscarAluno(req, res) {
 // Dica: use prisma.aluno.create({ data: { ... }, select: selectSemSenha })
 // Dica: os dados do aluno vêm de req.body (nome, email, senhaHash, cidade, frase, planosFuturos)
 // Dica: retorne status 201 com o aluno criado
-export const criarAluno = async (req, res) => {
-  try {
-    const { nome, email, senhaHash, cidade } = req.body;
-    const aluno = await prisma.aluno.create({ data: { nome, email, senhaHash, cidade } });
-    const { senhaHash: _, ...alunoSemSenha } = aluno;
-    return res.status(201).json(alunoSemSenha);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ erro: error.message });
-  }
-};
+export async function criarAluno(req, res) {
+  const { nome, email, senhaHash, cidade, frase, planosFuturos } = req.body;
+  const novoAluno = await prisma.aluno.create({
+    data: { nome, email, senhaHash, cidade, frase, planosFuturos },
+    select: selectSemSenha,
+  });
+  res.status(201).json(novoAluno);
+}
 
 // 🎯 PUT /alunos/:id — atualiza um aluno existente
 // Dica: use prisma.aluno.update({ where: { id: Number(id) }, data: { ... }, select: selectSemSenha })
 // Dica: o id vem de req.params, os dados atualizados de req.body
 // Dica: se o aluno não existir, o Prisma lança um erro — use try/catch
 export async function atualizarAluno(req, res) {
+  const { id } = req.params;
+  const dados = req.body;
   try {
-    const { id } = req.params;
-    const { nome, email, senhaHash, cidade } = req.body;
-
     const alunoAtualizado = await prisma.aluno.update({
       where: { id: Number(id) },
-      data: { nome, email, senhaHash, cidade }, // Se vier undefined, vai quebrar
-      select: { id: true, nome: true, email: true, cidade: true } // só campos que existem
+      data: dados,
+      select: selectSemSenha,
     });
-
-    return res.status(200).json(alunoAtualizado);
-  } catch (error) {
-    if (error.code === 'P2025') {
-      return res.status(404).json({ erro: 'Aluno não encontrado' });
-    }
-    console.error(error);
-    return res.status(500).json({ erro: error.message });
+    res.json(alunoAtualizado);
+  } catch (erro) {
+    res.status(404).json({ erro: "Aluno não encontrado" });
   }
 }
 
@@ -85,13 +76,13 @@ export async function atualizarAluno(req, res) {
 // Dica: retorne status 204 (sem conteúdo) com res.status(204).end()
 // Dica: se o aluno não existir, o Prisma lança um erro — use try/catch
 export async function deletarAluno(req, res) {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    await prisma.aluno.delete({ 
-      where: { id: Number(id) } 
+    await prisma.aluno.delete({
+      where: { id: Number(id) },
     });
-    return res.status(204).end(); // Sem conteúdo, é o que o teste quer
-  } catch (error) {
-    return res.status(404).json({ erro: 'Aluno não encontrado' });
+    res.status(204).end();
+  } catch (erro) {
+    res.status(404).json({ erro: "Aluno não encontrado" });
   }
 }
