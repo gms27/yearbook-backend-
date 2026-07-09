@@ -1,0 +1,34 @@
+info:
+  name: Criar mensagem
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: https://fluffy-barnacle-97pjgp957xxjf996q-3000.app.github.dev/mensagens
+  body:
+    type: json
+    data: |-
+      {
+        "texto": "Salve, turma! Último ano!",
+        "autorId": 2
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 201", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("deve conter campo texto", function() {
+          expect(res.getBody().texto).to.equal('Salve, turma! Último ano!');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

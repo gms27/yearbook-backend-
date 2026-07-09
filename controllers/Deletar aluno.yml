@@ -1,0 +1,23 @@
+info:
+  name: " Deletar aluno "
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: https://fluffy-barnacle-97pjgp957xxjf996q-3000.app.github.dev/alunos/3
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 204", function() {
+          expect(res.getStatus()).to.equal(204);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
