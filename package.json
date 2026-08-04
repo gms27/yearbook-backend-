@@ -1,28 +1,27 @@
 {
-  "name": "yearbook-backend",
+  "name": "26webm-yearbook-backend",
   "version": "1.0.0",
-  "type": "module", 
+  "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "bugs": {
-    "url": "https://github.com/gms27/yearbook-backend"
+  "repository": {
+    "type": "git",
+    "url": "git@arthurfporto.github.com:arthurfporto/26webm-yearbook-backend"
   },
-  "homepage": "https://github.com/gms27/yearbook-backend",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
     "prisma": "^6.19.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gms27/yearbook-backend"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }

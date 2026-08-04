@@ -141,5 +141,11 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
-.env
+
 /generated/prisma
+
+<<<<<<< HEAD
+.vscode/
+=======
+.vscode
+>>>>>>> feature/crud-alunos

@@ -1,6 +1,5 @@
-import prisma from "../prisma/client.js"; // importa o singleton do Prisma
+import prisma from "../prisma/client.js"; 
 
-// select que omite senhaHash — reutilizado em todas as queries de alunos
 const selectSemSenha = {
   id: true,
   nome: true,
@@ -11,38 +10,29 @@ const selectSemSenha = {
   fotoUrl: true,
   role: true,
   criadoEm: true,
-  // senhaHash NÃO está aqui — nunca retornado pela API
 };
 
-// GET /alunos — lista todos os alunos
 export async function listarAlunos(req, res) {
   const alunos = await prisma.aluno.findMany({
-    select: selectSemSenha, // retorna todos os campos EXCETO senhaHash
+    select: selectSemSenha, 
   });
-  res.json(alunos); // responde com o array de alunos em JSON
+  res.json(alunos); 
 }
 
-// GET /alunos/:id — busca um aluno pelo ID
 export async function buscarAluno(req, res) {
-  const { id } = req.params; // extrai o :id da URL
+  const { id } = req.params;
   const aluno = await prisma.aluno.findUnique({
-    where: { id: Number(id) }, // converte string → number
-    select: selectSemSenha, // omite senhaHash
+    where: { id: Number(id) }, 
+    select: selectSemSenha, 
   });
 
   if (!aluno) {
-    return res.status(404).json({ erro: "Aluno não encontrado" }); // null → 404
+    return res.status(404).json({ erro: "Aluno não encontrado" }); 
   }
 
-  res.json(aluno); // retorna o aluno encontrado
+  res.json(aluno); 
 }
 
-// --- Stubs para o desafio do aluno ---
-
-// 🎯 POST /alunos — cria um novo aluno
-// Dica: use prisma.aluno.create({ data: { ... }, select: selectSemSenha })
-// Dica: os dados do aluno vêm de req.body (nome, email, senhaHash, cidade, frase, planosFuturos)
-// Dica: retorne status 201 com o aluno criado
 export async function criarAluno(req, res) {
   const { nome, email, senhaHash, cidade, frase, planosFuturos } = req.body;
   const novoAluno = await prisma.aluno.create({
@@ -52,10 +42,6 @@ export async function criarAluno(req, res) {
   res.status(201).json(novoAluno);
 }
 
-// 🎯 PUT /alunos/:id — atualiza um aluno existente
-// Dica: use prisma.aluno.update({ where: { id: Number(id) }, data: { ... }, select: selectSemSenha })
-// Dica: o id vem de req.params, os dados atualizados de req.body
-// Dica: se o aluno não existir, o Prisma lança um erro — use try/catch
 export async function atualizarAluno(req, res) {
   const { id } = req.params;
   const dados = req.body;
@@ -71,10 +57,6 @@ export async function atualizarAluno(req, res) {
   }
 }
 
-// 🎯 DELETE /alunos/:id — deleta um aluno
-// Dica: use prisma.aluno.delete({ where: { id: Number(id) } })
-// Dica: retorne status 204 (sem conteúdo) com res.status(204).end()
-// Dica: se o aluno não existir, o Prisma lança um erro — use try/catch
 export async function deletarAluno(req, res) {
   const { id } = req.params;
   try {

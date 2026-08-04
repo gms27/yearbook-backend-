@@ -1,27 +1,20 @@
-import prisma from "../prisma/client.js"; // importa o singleton do Prisma
+import prisma from "../prisma/client.js";
 
-// GET /mensagens — lista todas as mensagens (mais recentes primeiro, com dados do autor)
 export async function listarMensagens(req, res) {
   const mensagens = await prisma.mensagem.findMany({
-    orderBy: { criadoEm: "desc" }, // mais recente primeiro
+    orderBy: { criadoEm: "desc" }, 
     include: {
       autor: {
-        // traz dados do autor junto
         select: {
-          nome: true, // nome do autor
-          fotoUrl: true, // foto do autor
+          nome: true, 
+          fotoUrl: true, 
         },
       },
     },
   });
-  res.json(mensagens); // retorna a lista com autor embutido
+  res.json(mensagens); 
 }
 
-// --- Stubs para o desafio do aluno ---
-
-// 🎯 POST /mensagens — cria uma nova mensagem
-// Siga o mesmo padrão do criarAluno
-// Valide que texto não está vazio (400 se faltar)
 export async function criarMensagem(req, res) {
   const { texto, imagemUrl, autorId } = req.body;
 
@@ -39,8 +32,6 @@ export async function criarMensagem(req, res) {
   res.status(201).json(novaMensagem);
 }
 
-// 🎯 DELETE /mensagens/:id — deleta uma mensagem
-// Siga o mesmo padrão do deletarAluno
 export async function deletarMensagem(req, res) {
   const { id } = req.params;
   try {

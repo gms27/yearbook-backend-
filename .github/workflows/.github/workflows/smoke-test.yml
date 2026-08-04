@@ -16,4 +16,3 @@ jobs:
       - run: npm install
       - name: Verifica sintaxe de todos os arquivos JS
         run: find . -name '*.js' -not -path './node_modules/*' -exec node --check {} +
-        
